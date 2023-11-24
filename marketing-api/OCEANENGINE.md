@@ -1,13 +1,5 @@
 # 巨量引擎开放平台 Golang SDK
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/bububa/oceanengine.svg)](https://pkg.go.dev/github.com/bububa/oceanengine)
-[![Go](https://github.com/bububa/oceanengine/actions/workflows/go.yml/badge.svg)](https://github.com/bububa/oceanengine/actions/workflows/go.yml)
-[![goreleaser](https://github.com/bububa/oceanengine/actions/workflows/goreleaser.yml/badge.svg)](https://github.com/bububa/oceanengine/actions/workflows/goreleaser.yml)
-[![GitHub go.mod Go version of a Go module](https://img.shields.io/github/go-mod/go-version/bububa/oceanengine.svg)](https://github.com/bububa/oceanengine)
-[![GoReportCard](https://goreportcard.com/badge/github.com/bububa/oceanengine)](https://goreportcard.com/report/github.com/bububa/oceanengine)
-[![GitHub license](https://img.shields.io/github/license/bububa/oceanengine.svg)](https://github.com/bububa/oceanengine/blob/master/LICENSE)
-[![GitHub release](https://img.shields.io/github/release/bububa/oceanengine.svg)](https://GitHub.com/bububa/oceanengine/releases/)
-
 - Oauth2 授权 (api/oauth)
   - 生成授权链接 [ Url(clt *core.SDKClient, redirectUrl string, state string, materialAuth bool) string ]
   - 获取 AccessToken [ AccessToken(clt *core.SDKClient, authCode String) (*oauth.AccessTokenResponseData, error) ]
@@ -27,6 +19,9 @@
     - 批量上传资质附件 [ AttachmentUpload(clt *core.SDKClient, accessToken string, req *advertiser.AttachmentUploadRequest) (uint64, error)]
     - 投放资质查询 [ DeliveryQualificationList(clt *core.SDKClient, accessToken string, req *advertiser.DeliveryQualificationListRequest) (*advertiser.DeliveryQualificationListData, error) ]
     - 投放资质提交 [ DeliveryQualificationSubmit(clt *core.SDKClient, accessToken string, req *advertiser.DeliveryQualificationSubmitRequest) error ]
+    - 查询推广产品资质规则配置 [ DeliveryPkgConfig(clt *core.SDKClient, accessToken string, req *advertiser.DeliveryPkgConfigRequest) (*advertiser.IndustryConfig, error) ]
+    - 查询推广产品资质 [ DeliveryPkgGet(clt *core.SDKClient, accessToken string, req *advertiser.DeliveryPkgGetRequest) (*advertiser.DeliveryPkg, error) ]
+    - 提交/编辑推广产品资质 [ DeliveryPkgSubmit(clt *core.SDKClient, accessToken string, req *advertiser.DeliveryPkgSubmitRequest) (*advertiser.DeliveryPkgSubmitResult, error) ]
   - 代理商账号管理 (api/agent)
     - 广告主列表 [ AdvertiserSelect(clt *core.SDKClient, accessToken string, req *agent.AdvertiserSelectRequest) (*agent.AdvertiserSelectResponseData, error) ]
     - 修改广告主 [ AdvertiserUpdate(clt *core.SDKClient, accessToken string, req *agent.AdvertiserUpdateRequest) (*agent.AdvertiserUpdateResponseData, error) ]
@@ -202,12 +197,6 @@
   - 创建DPA商品（无商品id） [ ProductCreate(clt *core.SDKClient, accessToken string, req *dpa.ProductCreateRequest) (uint64, error) ]
   - 批量修改DPA商品状态 [ ProductStatusBatchUpdate(clt *core.SDKClient, accessToken string, req *dpa.ProductStatusBatchUpdateRequest) (*dpa.ProductStatusBatchUpdateResponseData, error) ]
   - 删除DPA商品 [ ProductDelete(clt *core.SDKClient, accessToken string, req *dpa.ProductDeleteRequest) error ]
-- 巨量星图 (api/star)
-  - 获取星图客户任务列表 [ DemandList(clt *core.SDKClient, accessToken string, req *star.DemandListRequest) (*star.DemandListResponseData, error) ]
-  - 获取星图客户任务订单列表 [ DemandOrderList(clt *core.SDKClient, accessToken string, req *star.DemandOrderListRequest) (*star.DemandOrderListResponseData, error) ]
-  - 获取订单投后分析报表 [ ReportOrderOverviewGet(clt *core.SDKClient, accessToken string, req *star.ReportOrderOverviewGetRequest) (*star.ReportOrderOverviewGetResponseData, error) ]
-  - 获取订单投后受众报表 [ ReportOrderUserDistributionGet(clt *core.SDKClient, accessToken string, req *star.ReportOrderUserDistributionGetRequest) (*star.ReportOrderUserDistributionGetResponseData, error) ]
-  - 获取星图订单投后线索 [ ClueList(clt *core.SDKClient, accessToken string, req *star.ClueListRequest) (*star.ClueListResponseData, error) ]
 - 素材管理 (api/file)
   - 上传广告主图片 [ ImageAdvertiser(clt *core.SDKClient, accessToken string, req *file.ImageAdvertiserRequest) (*file.Image, error) ]
   - 上传广告图片 [ ImageAd(clt *core.SDKClient, accessToken string, req *file.ImageAdRequest) (*file.Image, error) ]
@@ -219,14 +208,17 @@
   - 获取同主体下广告主视频素材 [ VideoAdGet(clt *core.SDKClient, accessToken string, req *file.VideoAdGetRequest) ([]file.Video, error) ]
   - 素材推送 [ MaterialBind(clt *core.SDKClient, accessToken string, req *file.MaterialBindRequest) ([]file.FailedMaterialBind, error) ]
   - 批量删除视频素材 [ VideoDelete(clt *core.SDKClient, accessToken string, req *file.VideoDeleteRequest) ([]string, error) ]
+  - 按账户暂停素材 [ VideoPause(clt *core.SDKClient, accessToken string, req *file.VideoPauseRequest) (*file.VideoPauseResult, error) ]
   - 更新视频 [ VideoUpdate(clt *core.SDKClient, accessToken string, req *file.VideoUpdateRequest) ([]file.VideoForUpdate, error) ]
   - 获取素材标签列表 [ MaterialList(clt *core.SDKClient, accessToken string, req *file.MaterialListRequest) (*file.MaterialListData, error) ]
   - 查询素材标签信息 [ MaterialDetail(clt *core.SDKClient, accessToken string, req *file.MaterialDetailRequest) ([]file.Material, error) ]
   - 获取低效素材 [ VideoEffeciencyGet(clt *core.SDKClient, accessToken string, req *file.VideoEffeciencyGetRequest) ([]string, error) ] 
   - 批量删除图片素材 [ v3.ImageDelete(clt *core.SDKClient, accessToken string, req *v3.ImageDeleteRequest) ([]string, error) ]
+  - 获取低效素材List [ RebateMaterialSearch(clt *core.SDKClient, accessToken string, req *file.RebateMaterialSearchRequest) (*file.RebateMaterialSearchResult, error) ]
   - 创建素材清理任务 [ VideoMaterialClearTaskCreate(clt *core.SDKClient, accessToken string, req *file.VideoMaterialClearTaskCreateRequest) (uint64, error) ]
   - 获取清理任务列表 [ VideoMaterialClearTaskGet(clt *core.SDKClient, accessToken string, req *file.VideoMaterialClearTaskGetRequest) (*file.VideoMaterialClearTaskGetData, error) ]
   - 下载清理任务结果 [ VideoMaterialClearTaskResultGet(clt *core.SDKClient, accessToken string, req *file.VideoMaterialClearTaskResultGetRequest) (*file.VideoMaterialClearTaskResultGetData, error) ]
+  - 上传图文内的音频素材 [ AudioAd(clt *core.SDKClient, accessToken string, req *file.AudioAdRequest) (*file.Audio, error) ]
   - 上传图集 [ CarouselCreate(clt *core.SDKClient, accessToken string, req *file.CarouselCreateRequest) (*file.Carousel, error) ]
   - 获取图集素材 [ CarouselList(clt *core.SDKClient, accessToken string, req *file.CarouselListRequest) (*file.CarouselListResult, error) ]
   - 更新图集信息 [ CarouselUpdate(clt *core.SDKClient, accessToken string, req *file.CarouselUpdateRequest) ([]file.CarouselUpdateResult, error) ]
@@ -454,9 +446,19 @@
     - 查询安卓应用母包 [ AndroidBasicPackageGet(clt *core.SDKClient, accessToken string, req *appmanagement.AndroidBasicPackageGetRequest) (*appmanagement.AndroidBasicPackageGetResult, error) ]
     - 更新安卓应用母包 [ AndroidBasicPackageUpdate(clt *core.SDKClient, accessToken string, req *appmanagement.AndroidBasicPackageUpdateRequest) error ]
     - 发布安卓应用母包 [ AndroidBasicPackagePublish(clt *core.SDKClient, accessToken string, req *appmanagement.AndroidBasicPackagePublishRequest) error ]
+  - RTA策略管理 (tools/rta)
+    - 获取RTA策略数据 [ GetInfo(clt *core.SDKClient, accessToken string, req *rta.GetInfoRequest) (*rta.GetInfoData, error) ]
+    - 获取可用的RTA策略 [ Get(clt *core.SDKClient, accessToken string, req *rta.GetRequest) ([]rta.RtaInfo, error) ] 
+    - 批量启停账户下RTA策略 [ StatusUpdate(clt *core.SDKClient, accessToken string, req *rta.StatusUpdateRequest) error ]
+    - 设置账户下RTA策略生效范围 [ SetScope(clt *core.SDKClient, accessToken string, req *rta.SetScopeRequest) error ]
+    - 获取穿山甲渠道RTA联合实验数据 [ RtaExpGet(clt *core.SDKClient, accessToken string, req *rta.RtaExpGetRequest) ([]rta.Report, error) ]
+    - 获取站内媒体RTA联合实验数据（分时t+5） [ RtaExpLocalHourlyGet(clt *core.SDKClient, accessToken string, req *rta.RtaExpLocalHourlyGetRequest) ([]rta.Report, error) ]
+    - 获取站内媒体RTA联合实验数据（分天t+1）[ RtaExpLocalDailyGet(clt *core.SDKClient, accessToken string, req *rta.RtaExpLocalDailyGetRequest) ([]rta.GetRtaExpLocalDailyData, error) ]
+    - 获取RTA策略绑定信息列表 [ ScopeGet(clt *core.SDKClient, accessToken string, req *rta.ScopeGetRequest) ([]rta.Scope, error) ]
   - 评论管理 (tools/comment)
     - 获取评论列表 [ Get(clt *core.SDKClient, accessToken string, req *comment.GetRequest) (*comment.GetResponseData, error) ]
     - 获取评论回复列表 [ ReplyGet(clt *core.SDKClient, accessToken string, req *comment.ReplyGetRequest) (*comment.ReplyGetResponseData, error) ]
+    - 获取评论统计指标 [ MetricsGet(clt *core.SDKClient, accessToken string, req *comment.MetricsGetRequest) (*comment.MetricsGetResult, error) ]
     - 评论操作 [ Operate(clt *core.SDKClient, accessToken string, req *comment.OperateRequest) (*comment.OperateResponseData, error) ]
     - 屏蔽词/屏蔽用户
       - 获取屏蔽词列表 [ TermsBandedGet(clt *core.SDKClient, accessToken string, req *comment.TermsBandedGetRequest) (*comment.TermsBandedGetResponseData, error) ]
@@ -488,6 +490,10 @@
     - 设置微信小游戏/小程序共享 [ BpAssetManagementShare(clt *core.SDKClient, accessToken string, req *wechat.BpAssetManagementShareRequest) ([]wechat.BpAssetManagementShareError, error) ]
     - 取消微信小游戏/小程序共享关系 [ BpAssetManagementShareCancel(clt *core.SDKClient, accessToken string, req *wechat.BpAssetManagementShareRequest) ([]wechat.BpAssetManagementShareError, error) ]
     - 查看微信小游戏/小程序共享范围 [ BpAssetManagementShareGet(clt *core.SDKClient, accessToken string, req *wechat.BpAssetManagementShareGetRequest) (*wechat.BpAssetManagementShareList, error) ]
+  - 字节小程序/小游戏管理 (tools)
+    - 获取字节小游戏 [ MicroGameList(clt *core.SDKClient, accessToken string, req *tools.MicroAppListRequest) (*tools.MicroAppListResult, error) ]
+    - 获取字节小程序 [ MicroAppList(clt *core.SDKClient, accessToken string, req *tools.MicroAppListRequest) (*tools.MicroAppListResult, error) ]
+    - 获取字节小程序/小游戏详情内容 [ AssetLinkList(clt *core.SDKClient, accessToken string, req *tools.AssetLinkListRequest) (*tools.AssetLinkListResult, error) ]
 - 应用市场 (api/servemarket)
   - 获取应用订单数据 [ OrderGet(clt *core.SDKClient, accessToken string, req *servemarket.OrderGetRequest) (*servemarket.OrderGetResponseData, error) ]
   - 获取用户已购功能点列表 [ ActiveFuncGet(clt *core.SDKClient, accessToken string, req *servemarket.ActiveFuncGetRequest) ([]servemarket.OrderFunction, error) ]
