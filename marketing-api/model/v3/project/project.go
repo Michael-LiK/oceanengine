@@ -122,6 +122,12 @@ type Project struct {
 	DeliverySetting *DeliverySetting `json:"delivery_setting,omitempty"`
 	// TrackURLSetting 监测链接设置
 	TrackURLSetting *TrackURLSetting `json:"track_url_setting,omitempty"`
+	// BudgetMode 允许值:
+	// BUDGET_MODE_DAY日预算
+	// BUDGET_MODE_INFINITE不限
+	BudgetMode enum.BudgetMode `json:"budget_mode,omitempty"`
+	// Budget 预算，单位“元”，精度：两位小数。
+	Budget float64 `json:"budget,omitempty"`
 }
 
 func (p Project) GetID() uint64 {
